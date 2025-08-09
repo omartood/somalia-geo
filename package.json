@@ -1,0 +1,36 @@
+{
+  "name": "somali-geo",
+  "version": "0.1.0",
+  "description": "Somalia locations (regions, districts, cities) with coordinates — tiny DB + CLI.",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "bin": {
+    "somaligeo": "src/cli.js"
+  },
+  "files": [
+    "src",
+    "data",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "somalia",
+    "locations",
+    "geodata",
+    "regions",
+    "districts",
+    "cities"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "scripts": {
+    "test": "node test/run.js",
+    "test:api": "node test/index.test.js",
+    "test:cli": "node test/cli.test.js"
+  },
+  "devDependencies": {
+    "assert": "^2.0.0"
+  }
+}
