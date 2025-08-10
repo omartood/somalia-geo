@@ -33,22 +33,22 @@ npm install -g somali-geo
 ### JavaScript API
 
 ```javascript
-const { listRegions, search, getByCode, listChildren } = require('somali-geo');
+const { listRegions, search, getByCode, listChildren } = require("somali-geo");
 
 // Get all regions
 const regions = listRegions();
 console.log(regions.length); // 18
 
 // Search for places
-const results = search('Bosaso');
+const results = search("Bosaso");
 console.log(results[0].name); // "Bosaso"
 
 // Get place by code
-const awdal = getByCode('SO-AW');
+const awdal = getByCode("SO-AW");
 console.log(awdal.name); // "Awdal"
 
 // Get districts in a region
-const districts = listChildren('SO-BN'); // Banaadir region
+const districts = listChildren("SO-BN"); // Banaadir region
 console.log(districts.length); // 21 districts
 ```
 
@@ -76,6 +76,7 @@ somaligeo near 2.05 45.32 city 5 100
 ### Core Functions
 
 #### `listRegions()`
+
 Returns all 18 regions of Somalia.
 
 ```javascript
@@ -84,37 +85,41 @@ const regions = listRegions();
 ```
 
 #### `search(query)`
+
 Search places by name or aliases (case-insensitive).
 
 ```javascript
-const results = search('Bosaso');
+const results = search("Bosaso");
 // Returns: Array of matching places
 ```
 
 #### `getByCode(code)`
+
 Get a specific place by its code (case-insensitive).
 
 ```javascript
-const place = getByCode('SO-AW');
+const place = getByCode("SO-AW");
 // Returns: Place object or null
 ```
 
 #### `listChildren(parentCode)`
+
 Get all child places (districts/cities) of a parent region.
 
 ```javascript
-const districts = listChildren('SO-BN');
+const districts = listChildren("SO-BN");
 // Returns: Array of child places
 ```
 
 #### `nearest(lat, lon, options)`
+
 Find nearest places to given coordinates.
 
 ```javascript
 const nearby = nearest(2.05, 45.32, {
-  type: 'city',      // Filter by type (optional)
-  limit: 5,          // Max results (default: 5)
-  radiusKm: 100      // Max distance in km (optional)
+  type: "city", // Filter by type (optional)
+  limit: 5, // Max results (default: 5)
+  radiusKm: 100, // Max distance in km (optional)
 });
 // Returns: Array of places with distance
 ```
@@ -125,13 +130,13 @@ Each place object contains:
 
 ```typescript
 interface Place {
-  code: string;           // Unique identifier (e.g., "SO-AW" for Awdal region)
-  name: string;           // Place name (e.g., "Awdal")
-  type: PlaceType;        // "region" | "district" | "city" | "town" | "village"
-  parent: string | null;  // Parent place code or null for regions
-  lat?: number;           // Latitude (when available)
-  lon?: number;           // Longitude (when available)
-  aliases?: string[];     // Alternative names
+  code: string; // Unique identifier (e.g., "SO-AW" for Awdal region)
+  name: string; // Place name (e.g., "Awdal")
+  type: PlaceType; // "region" | "district" | "city" | "town" | "village"
+  parent: string | null; // Parent place code or null for regions
+  lat?: number; // Latitude (when available)
+  lon?: number; // Longitude (when available)
+  aliases?: string[]; // Alternative names
 }
 ```
 
@@ -177,11 +182,11 @@ somaligeo near 2.05 45.32 city 3 50 # Within 50km radius
 ### Find all districts in Banaadir region (Mogadishu area)
 
 ```javascript
-const { listChildren } = require('somali-geo');
+const { listChildren } = require("somali-geo");
 
-const mogadishuDistricts = listChildren('SO-BN');
+const mogadishuDistricts = listChildren("SO-BN");
 console.log(`Mogadishu has ${mogadishuDistricts.length} districts:`);
-mogadishuDistricts.forEach(district => {
+mogadishuDistricts.forEach((district) => {
   console.log(`- ${district.name} (${district.code})`);
 });
 ```
@@ -189,10 +194,10 @@ mogadishuDistricts.forEach(district => {
 ### Search and explore hierarchy
 
 ```javascript
-const { search, listChildren } = require('somali-geo');
+const { search, listChildren } = require("somali-geo");
 
 // Find a region
-const results = search('Awdal');
+const results = search("Awdal");
 const awdal = results[0];
 
 // Get its districts
@@ -289,6 +294,7 @@ MIT License - see [LICENSE](LICENSE) file for details.
 ## Changelog
 
 ### v0.1.0
+
 - Initial release
 - Complete administrative divisions data
 - CLI tool with all basic commands

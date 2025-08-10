@@ -1,9 +1,18 @@
 {
   "name": "somali-geo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Somalia locations (regions, districts, cities) with coordinates — tiny DB + CLI.",
   "main": "src/index.js",
   "types": "src/index.d.ts",
+  "homepage": "https://github.com/omartood/somalia-geo#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omartood/somalia-geo.git"
+  },
+  "bugs": {
+    "url": "https://github.com/omartood/somalia-geo/issues"
+  },
+  "author": "Omar Tood <omar@example.com>",
   "bin": {
     "somaligeo": "src/cli.js"
   },
@@ -28,7 +37,8 @@
   "scripts": {
     "test": "node test/run.js",
     "test:api": "node test/index.test.js",
-    "test:cli": "node test/cli.test.js"
+    "test:cli": "node test/cli.test.js",
+    "prepublishOnly": "npm test"
   },
   "devDependencies": {
     "assert": "^2.0.0"
