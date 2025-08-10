@@ -1,6 +1,6 @@
 {
   "name": "somali-geo",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Somalia locations (regions, districts, cities) with coordinates — tiny DB + CLI.",
   "main": "src/index.js",
   "types": "src/index.d.ts",
@@ -42,5 +42,8 @@
   },
   "devDependencies": {
     "assert": "^2.0.0"
+  },
+  "dependencies": {
+    "fuse.js": "^7.1.0"
   }
 }

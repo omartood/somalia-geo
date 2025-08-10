@@ -9,12 +9,15 @@ A lightweight JavaScript library and CLI tool for Somalia's administrative divis
 ## Features
 
 - 🗺️ **Complete coverage**: 18 regions, 100+ districts and cities
-- 🔍 **Smart search**: Find places by name or aliases
+- 🔍 **Smart search**: Find places by name or aliases with fuzzy matching
+- 🎯 **Advanced filtering**: Filter by type, region, population, area, and more
 - 🏗️ **Hierarchical data**: Navigate parent-child relationships
 - 📍 **Distance calculations**: Find nearest places (when coordinates available)
-- 🖥️ **CLI tool**: Command-line interface for quick queries
-- 📦 **Tiny footprint**: Minimal dependencies, fast loading
+- 📊 **Data statistics**: Get insights about regions, populations, and coverage
+- 🖥️ **Enhanced CLI**: Powerful command-line interface with advanced features
+- 📦 **Lightweight**: Minimal dependencies, fast loading
 - 🔧 **TypeScript support**: Full type definitions included
+- 🚀 **Fuzzy search**: Typo-tolerant search powered by Fuse.js
 
 ## Installation
 
@@ -33,42 +36,60 @@ npm install -g somali-geo
 ### JavaScript API
 
 ```javascript
-const { listRegions, search, getByCode, listChildren } = require("somali-geo");
+const { 
+  listRegions, 
+  search, 
+  fuzzySearch, 
+  filter, 
+  getByCode, 
+  listChildren,
+  getStats,
+  getLargestByPopulation 
+} = require("somali-geo");
 
 // Get all regions
 const regions = listRegions();
 console.log(regions.length); // 18
 
-// Search for places
+// Search for places (exact match)
 const results = search("Bosaso");
 console.log(results[0].name); // "Bosaso"
+
+// Fuzzy search (typo-tolerant)
+const fuzzyResults = fuzzySearch("Bosasso", 5); // Finds "Bosaso"
+console.log(fuzzyResults[0].name); // "Bosaso"
+
+// Advanced filtering
+const districts = filter({
+  type: 'district',
+  region: 'SO-BN',
+  limit: 5
+});
 
 // Get place by code
 const awdal = getByCode("SO-AW");
 console.log(awdal.name); // "Awdal"
 
-// Get districts in a region
-const districts = listChildren("SO-BN"); // Banaadir region
-console.log(districts.length); // 21 districts
+// Get statistics
+const stats = getStats();
+console.log(`Total places: ${stats.total}`); // 135
 ```
 
 ### CLI Usage
 
 ```bash
-# List all regions
-somaligeo regions
+# Basic commands
+somaligeo regions                    # List all regions
+somaligeo search Mogadishu          # Search for places
+somaligeo code SO-BN                # Get place by code
+somaligeo children SO-AW            # List districts in a region
 
-# Search for places
-somaligeo search Mogadishu
-
-# Get place by code
-somaligeo code SO-BN
-
-# List districts in a region
-somaligeo children SO-AW
-
-# Find nearest places (when coordinates available)
-somaligeo near 2.05 45.32 city 5 100
+# Enhanced commands
+somaligeo fuzzy "Mogadisho" 5       # Fuzzy search (finds "Mogadishu")
+somaligeo filter --type=district --region=SO-BN --limit=5
+somaligeo stats                     # Get data statistics
+somaligeo largest population 10    # Top 10 by population
+somaligeo near 2.05 45.32 city 5 100  # Find nearest places
 ```
 
 ## API Reference
@@ -76,7 +97,6 @@ somaligeo near 2.05 45.32 city 5 100
 ### Core Functions
 
 #### `listRegions()`
-
 Returns all 18 regions of Somalia.
 
 ```javascript
@@ -84,17 +104,41 @@ const regions = listRegions();
 // Returns: Array of region objects
 ```
 
-#### `search(query)`
-
+#### `search(query, options)`
 Search places by name or aliases (case-insensitive).
 
 ```javascript
 const results = search("Bosaso");
 // Returns: Array of matching places
+
+// With options
+const results = search("Bosaso", { fuzzy: true, limit: 5 });
+```
+
+#### `fuzzySearch(query, limit)`
+Typo-tolerant search powered by Fuse.js.
+
+```javascript
+const results = fuzzySearch("Bosasso", 5); // Finds "Bosaso"
+// Returns: Array of places with relevance scores
+```
+
+#### `filter(criteria)`
+Advanced filtering with multiple criteria.
+
+```javascript
+const districts = filter({
+  type: ['district', 'city'],
+  region: 'SO-BN',
+  hasCoordinates: true,
+  sortBy: 'name',
+  sortOrder: 'asc',
+  limit: 10
+});
+// Returns: Filtered and sorted array of places
 ```
 
 #### `getByCode(code)`
-
 Get a specific place by its code (case-insensitive).
 
 ```javascript
@@ -103,7 +147,6 @@ const place = getByCode("SO-AW");
 ```
 
 #### `listChildren(parentCode)`
-
 Get all child places (districts/cities) of a parent region.
 
 ```javascript
@@ -111,8 +154,31 @@ const districts = listChildren("SO-BN");
 // Returns: Array of child places
 ```
 
-#### `nearest(lat, lon, options)`
+#### `getStats()`
+Get comprehensive statistics about the dataset.
 
+```javascript
+const stats = getStats();
+// Returns: Object with totals, breakdowns by type/region, etc.
+```
+
+#### `getLargestByPopulation(limit)`
+Get places sorted by population (when available).
+
+```javascript
+const largest = getLargestByPopulation(10);
+// Returns: Top 10 places by population
+```
+
+#### `getLargestByArea(limit)`
+Get places sorted by area (when available).
+
+```javascript
+const largest = getLargestByArea(5);
+// Returns: Top 5 places by area
+```
+
+#### `nearest(lat, lon, options)`
 Find nearest places to given coordinates.
 
 ```javascript
